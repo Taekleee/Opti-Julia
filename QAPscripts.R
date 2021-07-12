@@ -126,17 +126,30 @@ evaluate_and_replace<- function(p_prima,p,f,d,n){
     evaluation_old[[i+1]] <- evaluarQAP(p[[i+1]], f, d)
     i = i + 1
   }
-  n = ceiling(n*0.6)
+  aux_evaluation_new = evaluation_new
+  aux_evaluation_old = evaluation_old
+  n = ceiling(n*0.4)
   
   for (i in 1:n){
     result <- append(result,p_prima[which.min(evaluation_new)]) 
     evaluation_new[which.min(evaluation_new)] <- exp(99)
   }
   
-  n = length(p_prima)-n
+  n = n+ceiling(n*0.2)
   for (i in 1:n){
     result <- append(result,p[which.min(evaluation_old)]) 
     evaluation_old[which.min(evaluation_old)] <- exp(99)
+  }
+  n = n+ceiling(n*0.2)
+  for (i in 1:n){
+    result <- append(result,p_prima[which.max(aux_evaluation_new)]) 
+    aux_evaluation_new[which.max(aux_evaluation_new)] <- -1*exp(99)
+  }
+  
+  n = length(p_prima)-n
+  for (i in 1:n){
+    result <- append(result,p[which.max(aux_evaluation_old)]) 
+    aux_evaluation_old[which.max(aux_evaluation_old)] <- -1*exp(99)
   }
   result
   
